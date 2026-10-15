@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crédito Disponível — D'Angelis & Anjos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ========= FORMULÁRIO ========= -->
+  <div class="container" id="formulario">
+    <h1>Gerar Crédito Disponível</h1>
+
+    <label for="cliente">Nome do Cliente</label>
+    <input type="text" id="cliente" placeholder="Ex: Lucas">
+
+    <label>Tipo de Documento</label>
+    <div class="radio-group">
+      <label class="radio-option">
+        <input type="radio" name="tipoDoc" value="cpf" checked onchange="trocarTipoDoc()">
+        <span>CPF</span>
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="tipoDoc" value="cnpj" onchange="trocarTipoDoc()">
+        <span>CNPJ</span>
+      </label>
+    </div>
+
+    <label for="documento" id="labelDocumento">CPF do Cliente</label>
+    <input
+      type="text"
+      id="documento"
+      placeholder="000.000.000-00"
+      maxlength="14"
+      inputmode="numeric"
+      oninput="mascararDocumento(this)">
+
+    <label for="valor">Valor do Crédito (R$)</label>
+    <input type="number" id="valor" step="0.01" placeholder="Ex: 20000.00">
+
+    <!-- LOJA 1: D'Angelis (fixa) -->
+    <label>Loja 1 — D'Angelis Mega Store</label>
+    <div class="loja-config">
+      <label class="checkbox-option">
+        <input type="checkbox" id="mostrarLoja1" checked>
+        <span>Exibir esta loja no documento</span>
+      </label>
+      <label for="desc1" class="label-desc">Desconto (%):</label>
+      <input type="number" id="desc1" value="0" class="input-desc" placeholder="0">
+    </div>
+
+    <!-- LOJA 2: Anjos (fixa) -->
+    <label>Loja 2 — Anjos Colchões & Sofás</label>
+    <div class="loja-config">
+      <label class="checkbox-option">
+        <input type="checkbox" id="mostrarLoja2" checked>
+        <span>Exibir esta loja no documento</span>
+      </label>
+      <label for="desc2" class="label-desc">Desconto (%):</label>
+      <input type="number" id="desc2" value="0" class="input-desc" placeholder="0">
+    </div>
+
+    <button class="gerar" onclick="gerar()">Gerar Crédito</button>
+  </div>
+
+  <!-- ========= CARD DE CRÉDITO ========= -->
+  <div id="card">
+
+    <!-- Cabeçalho -->
+    <div class="cabecalho">
+      <img src="img/logo-dangelis.png" alt="D'Angelis Mega Store" class="img-logo-dangelis">
+
+      <div class="empresa-dados">
+        <div class="empresa-nome">DG Comércio de Móveis Ltda.</div>
+        <div class="empresa-linha">CNPJ: 16.541.300/0001-18</div>
+        <div class="empresa-linha">Rua Presidente Bernardes, 2525 – Centro</div>
+        <div class="empresa-linha">Cascavel – PR – CEP 85810-130</div>
+      </div>
+    </div>
+
+    <!-- Título -->
+    <div class="titulo">
+      <div class="subtitulo">CRÉDITO DISPONÍVEL PARA</div>
+      <div class="nome" id="c-cliente">—</div>
+      <div class="cpf-cliente" id="c-documento">CPF: —</div>
+    </div>
+
+    <div class="divisor"></div>
+
+    <!-- Informação do crédito -->
+    <div class="info-credito">
+      <div class="linha1">
+        <strong><span id="c-cliente2">—</span></strong> possui um crédito de
+      </div>
+      <div class="caixa-valor" id="c-valor">R$ 0,00</div>
+      <div class="linha2">para utilizar na compra de móveis.</div>
+    </div>
+
+    <!-- Lojas -->
+    <div class="lojas-titulo" id="c-lojas-titulo">O crédito pode ser utilizado nas seguintes lojas:</div>
+
+    <div class="lojas" id="c-lojas">
+
+      <!-- Loja 1: D'Angelis -->
+      <div class="loja" id="c-loja1">
+        <div class="logo-loja">
+          <img src="img/logo-dangelis.png" alt="D'Angelis Mega Store" class="img-logo-lista">
+        </div>
+        <div class="info-loja">
+          <div class="nome-loja">D'Angelis Mega Store</div>
+          <div class="desconto" id="c-loja1-desconto">
+            <span id="c-loja1-desc">0%</span> <span>de desconto.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loja 2: Anjos -->
+      <div class="loja" id="c-loja2">
+        <div class="logo-loja">
+          <img src="img/logo-anjos.png" alt="Anjos Colchões & Sofás" class="img-logo-lista">
+        </div>
+        <div class="info-loja">
+          <div class="nome-loja">Anjos Colchões &amp; Sofás</div>
+          <div class="desconto" id="c-loja2-desconto">
+            <span id="c-loja2-desc">0%</span> <span>de desconto.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aviso -->
+    <div class="aviso">
+      <div class="tag-icon">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#c9a227" stroke-width="2.5">
+          <path d="M56 32 L32 56 L8 32 L8 8 L32 8 Z" stroke-linejoin="round"/>
+          <circle cx="22" cy="22" r="4"/>
+          <path d="M14 14 L6 6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="texto-aviso">
+        Os descontos também poderão seguir as condições das promoções
+        vigentes no mês da compra.
+      </div>
+    </div>
+
+    <!-- Assinaturas -->
+    <div class="assinaturas">
+      <div class="bloco-assinatura">
+        <div class="linha-assinatura"></div>
+        <div class="nome-assinado" id="c-ass-cliente-nome">Nome do Cliente</div>
+        <div class="cpf-assinado" id="c-ass-cliente-doc">CPF: —</div>
+      </div>
+
+      <div class="bloco-assinatura">
+        <div class="linha-assinatura"></div>
+        <div class="nome-assinado">D'ANGELIS MEGASTORE</div>
+        <div class="cpf-assinado">CNPJ: 16.541.300/0001-18</div>
+      </div>
+    </div>
+
+    <!-- Local e Data -->
+    <div class="local-data" id="c-local-data">
+      Cascavel – PR, ____ / ____ / ______
+    </div>
+
+    <div class="acoes">
+      <button class="btn-voltar" onclick="voltar()">Voltar</button>
+      <button class="btn-imprimir" onclick="window.print()">Imprimir</button>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
